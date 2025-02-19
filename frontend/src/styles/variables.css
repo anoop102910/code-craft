@@ -1,0 +1,21 @@
+:root {
+  /* Base colors */
+  --primary: #6C5CE7;
+  --primary-hover: #5A4BD1;
+  
+  /* Smash depth colors */
+  --smash-depth-1: rgb(15 23 42);    /* Darkest - for main backgrounds */
+  --smash-depth-2: rgb(30 41 59);    /* For secondary backgrounds */
+  --smash-depth-3: rgb(51 65 85);    /* For active elements */
+  --smash-depth-4: rgb(71 85 105);   /* For borders and dividers */
+  --smash-depth-5: rgb(100 116 139); /* For icons and secondary text */
+  --smash-depth-6: rgb(148 163 184); /* For placeholder text */
+  --smash-depth-7: rgb(203 213 225); /* For light text */
+  --smash-depth-8: rgb(226 232 240); /* For very light elements */
+  --smash-depth-9: rgb(241 245 249); /* For hover states */
+  --smash-depth-10: rgb(248 250 252);/* Lightest - for white text */
+
+  /* Opacity variants */
+  --smash-depth-8-04: rgba(226, 232, 240, 0.04);
+  --smash-depth-8-10: rgba(226, 232, 240, 0.1);
+} 

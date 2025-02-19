@@ -1,0 +1,90 @@
+/* Custom scrollbar styles for WebKit browsers */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--smash-depth-1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--smash-depth-4);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--smash-depth-5);
+}
+
+.editor-container {
+  @apply flex-1 overflow-hidden;
+  background: var(--smash-depth-1);
+}
+
+.cm-theme {
+  height: 100% !important;
+}
+
+.cm-editor {
+  font-family: 'Fira Code', monospace;
+  height: 100% !important;
+  color: #fff;
+  background-color: var(--smash-depth-1) !important;
+}
+
+.cm-focused {
+  outline: none !important;
+}
+
+.cm-line {
+  padding: 0 8px;
+  line-height: 1.6;
+}
+
+.cm-gutters {
+  background-color: var(--smash-depth-1) !important;
+  border: none !important;
+  color: var(--smash-depth-4);
+}
+
+.cm-activeLineGutter {
+  background-color: var(--smash-depth-3) !important;
+  color: #fff !important;
+}
+
+.cm-activeLine {
+  background-color: var(--smash-depth-8-04) !important;
+}
+
+.cm-selectionBackground {
+  background-color: var(--smash-depth-8-10) !important;
+}
+
+.cm-cursor {
+  border-left: 2px solid #fff !important;
+}
+
+.cm-matchingBracket {
+  color: #0f0 !important;
+  background-color: rgba(0, 255, 0, 0.1);
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--smash-depth-8);
+  margin-bottom: 1rem;
+}
+
+.tab {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #fff;
+}
+
+.tab.active {
+  border-bottom: 2px solid #3b82f6;
+  color: #3b82f6;
+}
+
