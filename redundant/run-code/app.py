@@ -42,7 +42,7 @@ Langconfig = {
     },
 }
 
-@app.post("/run")
+@app.post("/run-code")
 async def run(request: Request):
     print("Running")
     data = await request.json()

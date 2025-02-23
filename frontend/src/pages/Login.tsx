@@ -16,7 +16,7 @@ import { AxiosError } from "axios";
 import { useAuth } from "@/context/AuthProvider";
 
 interface LoginFormData {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -27,7 +27,7 @@ export const Login = () => {
   const { setIsAuthenticated } = useAuth();
   const form = useForm<LoginFormData>({
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
   });
@@ -63,18 +63,18 @@ export const Login = () => {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
                 control={form.control}
-                name="email"
+                name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-foreground">Email</FormLabel>
+                    <FormLabel className="text-foreground">username</FormLabel>
                     <div className="relative">
                       <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
                       <FormControl>
                         <input
                           {...field}
-                          type="email"
+                          type="username"
                           className="w-full pl-10 pr-4 py-3 rounded-lg border border-input bg-background focus:border-[#6C5CE7] focus:ring-1 focus:ring-[#6C5CE7] outline-none transition"
-                          placeholder="Enter your email"
+                          placeholder="Enter your username"
                         />
                       </FormControl>
                     </div>
@@ -129,7 +129,7 @@ export const Login = () => {
                   type="button"
                   disabled={isPending}
                   onClick={() => {
-                    form.setValue('email', import.meta.env.VITE_DEMO_EMAIL || 'anoop@gmail.com');
+                    form.setValue('username', import.meta.env.VITE_DEMO_username || 'anoop@gmail.com');
                     form.setValue('password', import.meta.env.VITE_DEMO_PASSWORD || 'welcomeE2');
                     form.handleSubmit(onSubmit)();
                   }}

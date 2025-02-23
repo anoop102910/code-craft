@@ -3,7 +3,7 @@ export interface User {
   name: string;
   email: string;
   // Add other user properties as needed
-} 
+}
 
 export interface Problem {
   id: number;
@@ -33,20 +33,40 @@ export interface Category {
   description: string;
 }
 
-
 export enum Language {
-  JAVASCRIPT = 'javascript',
-  PYTHON = 'python',
-  JAVA = 'java',
-  CPP = 'cpp',
+  JAVASCRIPT = "javascript",
+  PYTHON = "python",
+  JAVA = "java",
+  CPP = "cpp",
+}
+
+export type SubmitCodeRequest = {
+  code:string,
+  language:string,
+  problem: number
+}
+
+export type UserCodeResponse = {
+  id: number;
+  code: string;
+  language: string;
+  problem: number;
+  status: string;
+  correct_cases: number;
+  incorrect_cases: number;
+  execution_time: number;
+  memory_used: number;
+  result: "accepted" | "wrong_answer" | "time_limit_exceeded" | "memory_limit_exceeded" | "runtime_error";
+  error_message: string;
+  submission_time: string;
 }
 
 export type Response<T> = {
   status: string;
   data: T;
-}
+};
 
-export type LoginResponse = Response<User & { token: string }>;
+export type LoginResponse = User & { refresh: string; access: string };
 
 export type UserResponse = Response<User>;
 
@@ -54,5 +74,4 @@ export type ProblemsResponse = Response<Problem[]>;
 
 export type ProblemResponse = Response<Problem>;
 
-export type ProblemRequest = Omit<Problem, 'id' | 'slug' | 'solved'>;
-
+export type ProblemRequest = Omit<Problem, "id" | "slug" | "solved">;

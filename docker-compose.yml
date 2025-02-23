@@ -1,0 +1,34 @@
+version: "3.8"
+services:
+  sqs:
+    image: softwaremill/elasticmq
+    container_name: local-sqs
+    ports:
+      - "9324:9324"
+      - "9325:9325"
+    environment:
+      - SQS_ENDPOINT_URL=http://local-sqs:9324  
+      - AWS_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+    volumes:
+      - ./sqs_data:/data
+
+  # sqs-admin:
+  #   image: wheniwork/sqs-admin
+  #   container_name: sqs-admin
+  #   ports:
+  #     - "8002:8002"
+
+  s3:
+      image: minio/minio
+      container_name: local-s3
+      ports:
+        - "9000:9000"  # S3 API
+        - "9001:9001"  # MinIO Console
+      environment:
+        MINIO_ROOT_USER: test
+        MINIO_ROOT_PASSWORD: test1234
+      command: server /data --console-address ":9001"
+      volumes:
+        - ./minio_data:/data

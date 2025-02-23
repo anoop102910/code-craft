@@ -13,7 +13,9 @@ export const useLogin = () => {
   const { mutate: login, ...rest } = useCustomMutation({
     mutationFn: apiService.auth.login,
     onSuccess: (data) => {
-      localStorage.setItem('token', data.data.token);
+      localStorage.setItem('token', data.access);
+      localStorage.setItem('refresh', data.refresh);
+      
       queryClient.invalidateQueries({ queryKey: ['user'] });
     },
   });

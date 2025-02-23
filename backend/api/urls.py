@@ -19,4 +19,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('problems.urls')),
+    path('', include('submit_code.urls')),
+    path('', include('authentication.urls')),
 ]

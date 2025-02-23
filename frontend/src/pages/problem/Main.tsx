@@ -3,11 +3,12 @@ import { ProblemDescription } from "./ProblemDescription";
 import { CodeEditor } from "./CodeEditor";
 import { EditorToolbar } from "./EditorToolbar";
 import "@/styles/editor.css";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Language } from "@/types";
 import { useProblem } from "@/services/problems.service";
 import { ConsoleError } from "./ConsoleError";
 import { TestResults } from "./TestResults";
+import { api, apiService } from "@/services/api.service";
 
 const DEFAULT_CODE = {
   [Language.CPP]: `#include <iostream>
@@ -34,7 +35,7 @@ export const ProblemPage = () => {
   if (!slug) {
     return <div>Problem not found</div>;
   }
-  
+
   const { problemData, isLoading, error } = useProblem(slug);
   const [language, setLanguage] = useState<Language>(Language.CPP);
   const [editorCode, setEditorCode] = useState<string>(DEFAULT_CODE[language]);
@@ -46,10 +47,21 @@ export const ProblemPage = () => {
     incorrect_cases: number;
     result: boolean;
   } | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const countRef = useRef<number>(0);
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
   };
+
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, []);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -63,32 +75,72 @@ export const ProblemPage = () => {
   }
 
   const problem = problemData.data;
-  console.log(problem);
 
   const handleSubmit = async () => {
     setPending(true);
     try {
-      const response = await fetch(`${import.meta.env.VITE_CODE_RUNNER_API_URL}/run`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ code: editorCode, language, slug }),
+      const submissionReponse = await apiService.code.submit({
+        code: editorCode,
+        language,
+        problem: problem.id,
       });
-      const data = await response.json();
-      console.log(data);
-      if (response.ok) {
-        setConsoleError(null);
-        setTestResult(data);
-        setActiveTab("results");
-      } else {
-        setActiveTab("console");
-        setConsoleError(data.error.stderr);
-      }
+      console.log(submissionReponse);
+
+      intervalRef.current = setInterval(async () => {
+        countRef.current++;
+        console.log(countRef.current);
+        if (countRef.current > 40) {
+          countRef.current = 0;
+          clearInterval(intervalRef.current!);
+          setConsoleError("Time limit exceeded");
+          setActiveTab("console");
+          setPending(false);
+          return;
+        }
+        try {
+          const userCodeResponse = await apiService.code.get_user_code(
+            submissionReponse.user_code_id
+          );
+          console.log(userCodeResponse);
+
+          if (userCodeResponse.status === "pending") {
+            return;
+          }
+
+          if (userCodeResponse.status === "completed") {
+            console.log(userCodeResponse);
+            setPending(false);
+            clearInterval(intervalRef.current!);
+            if (userCodeResponse.result === "accepted") {
+              setConsoleError(null);
+              setTestResult({
+                correct_cases: userCodeResponse.correct_cases,
+                incorrect_cases: userCodeResponse.incorrect_cases,
+                result: true,
+              });
+              setActiveTab("results");
+            } else if (userCodeResponse.result === "wrong_answer") {
+              setConsoleError(null);
+              setTestResult({
+                correct_cases: userCodeResponse.correct_cases,
+                incorrect_cases: userCodeResponse.incorrect_cases,
+                result: false,
+              });
+              setActiveTab("results");
+            } else {
+              setConsoleError(userCodeResponse.error_message);
+              setTestResult(null);
+              setActiveTab("console");
+            }
+          }
+        } catch (error) {
+          console.error(error);
+          clearInterval(intervalRef.current!);
+        }
+      }, 1000);
     } catch (error) {
-      console.error(error);
-    } finally {
       setPending(false);
+      console.error(error);
     }
   };
 
