@@ -1,10 +1,9 @@
 import child_process from "child_process";
 import { ExecutionError, TimeLimitExceeded } from "../utils/error.js";
+import { getDockerContainer } from "./dockerPool.js";
 
-const runner = {
+export const runner = {
   python: "python_runner",
-  java: "java_runner",
-  cpp: "cpp_runner",
 };
 
 const result = (data, testCases) => {
@@ -32,7 +31,7 @@ const result = (data, testCases) => {
 
 export const runCode = (testCases, codeMountPath, language) =>
   new Promise((resolve, reject) => {
-    const child = child_process.spawn("docker", [
+    /* const child = child_process.spawn("docker", [
       "run",
       "--rm",
       "-i",
@@ -42,7 +41,8 @@ export const runCode = (testCases, codeMountPath, language) =>
       runner[language],
       "timeout",
       "10s",
-    ]);
+    ]); */
+    const child = getDockerContainer(language)
 
     // console.log(child.pid);
 
