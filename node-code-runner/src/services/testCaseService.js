@@ -18,7 +18,7 @@ export const getTestCases = async problemId => {
 };
 
 
-function modifyTestCases(testCasesContent) {
+export function modifyTestCases(testCasesContent) {
     const testCases = [];
     const lines = testCasesContent
       .split("\n")

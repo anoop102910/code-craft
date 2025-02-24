@@ -36,8 +36,8 @@ export interface Category {
 export enum Language {
   JAVASCRIPT = "javascript",
   PYTHON = "python",
-  JAVA = "java",
-  CPP = "cpp",
+  // JAVA = "java",
+  // CPP = "cpp",
 }
 
 export type SubmitCodeRequest = {

@@ -13,7 +13,7 @@ const result = (data, testCases) => {
     .trim()
     .split("\n")
     .filter(output => output.length > 0);
-  console.log(exp_outputs);
+  // console.log(exp_outputs);
   if (exp_outputs.length != testCases.length) {
     return { c: 0, w: testCases.length }
   }
@@ -36,6 +36,7 @@ export const runCode = (testCases, codeMountPath, language) =>
       "run",
       "--rm",
       "-i",
+      "-m","20mb",
       "-v",
       codeMountPath,
       runner[language],
@@ -43,7 +44,7 @@ export const runCode = (testCases, codeMountPath, language) =>
       "10s",
     ]);
 
-    console.log(child.pid);
+    // console.log(child.pid);
 
     let fullOutput = "";
 

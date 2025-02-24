@@ -25,7 +25,7 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 
 export const apiService = {
   auth: {
-    login: async (data: { email: string; password: string }): Promise<LoginResponse> =>
+    login: async (data: { username: string; password: string }): Promise<LoginResponse> =>
       (await api.post("/auth/login", data)).data,
     register: async (data: {
       username: string;

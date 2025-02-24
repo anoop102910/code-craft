@@ -37,7 +37,7 @@ export const ProblemPage = () => {
   }
 
   const { problemData, isLoading, error } = useProblem(slug);
-  const [language, setLanguage] = useState<Language>(Language.CPP);
+  const [language, setLanguage] = useState<Language>(Language.PYTHON);
   const [editorCode, setEditorCode] = useState<string>(DEFAULT_CODE[language]);
   const [pending, setPending] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<string>("description");
@@ -186,6 +186,7 @@ export const ProblemPage = () => {
       <div className="flex-1 flex flex-col">
         <EditorToolbar
           onSubmit={handleSubmit}
+          language={language}
           onLanguageChange={handleLanguageChange}
           pending={pending}
         />

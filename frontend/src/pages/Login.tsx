@@ -49,14 +49,26 @@ export const Login = () => {
     });
   };
 
+  const handleDemoLogin = () => {
+    login({ username: "anoop102910", password: "welcomeme" }, {
+      onSuccess: () => {
+        setIsAuthenticated(true);
+        navigate("/");
+      },
+      onError: error => {
+        toast.error("Login failed");
+      },
+    });
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="w-full max-w-[1000px] grid md:grid-cols-2 bg-white rounded-2xl shadow-xl overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center p-4 ">
+      <div className="w-full max-w-[1000px] grid md:grid-cols-2 bg-[var(--smash-depth-2)] rounded-2xl shadow-xl overflow-hidden">
         {/* Left side - Form */}
         <div className="p-8 md:p-12">
           <div className="space-y-2 mb-8">
-            <h1 className="text-3xl font-bold">Login</h1>
-            <p className="text-muted-foreground">How to i get started lorem ipsum dolor sit?</p>
+            <h1 className="text-3xl font-bold text-[var(--smash-depth-8)]">Login</h1>
+            <p className="text-[var(--smash-depth-6)]">How to i get started lorem ipsum dolor sit?</p>
           </div>
 
           <Form {...form}>
@@ -66,19 +78,19 @@ export const Login = () => {
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-foreground">username</FormLabel>
+                    <FormLabel className="text-[var(--smash-depth-7)]">Username</FormLabel>
                     <div className="relative">
-                      <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--smash-depth-5)] h-5 w-5" />
                       <FormControl>
                         <input
                           {...field}
                           type="username"
-                          className="w-full pl-10 pr-4 py-3 rounded-lg border border-input bg-background focus:border-[#6C5CE7] focus:ring-1 focus:ring-[#6C5CE7] outline-none transition"
+                          className="w-full pl-10 pr-4 py-3 rounded-lg border border-[var(--smash-depth-6)] bg-[var(--smash-depth-2)] text-[var(--smash-depth-8)] focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none transition placeholder:text-[var(--smash-depth-5)]"
                           placeholder="Enter your username"
                         />
                       </FormControl>
                     </div>
-                    <FormMessage />
+                    <FormMessage className="text-red-500" />
                   </FormItem>
                 )}
               />
@@ -88,30 +100,26 @@ export const Login = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-foreground">Password</FormLabel>
+                    <FormLabel className="text-[var(--smash-depth-7)]">Password</FormLabel>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
+                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--smash-depth-5)] h-5 w-5" />
                       <FormControl>
                         <input
                           {...field}
                           type={showPassword ? "text" : "password"}
-                          className="w-full pl-10 pr-12 py-3 rounded-lg border border-input bg-background focus:border-[#6C5CE7] focus:ring-1 focus:ring-[#6C5CE7] outline-none transition"
+                          className="w-full pl-10 pr-12 py-3 rounded-lg border border-[var(--smash-depth-6)] bg-[var(--smash-depth-2)] text-[var(--smash-depth-8)] focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] outline-none transition placeholder:text-[var(--smash-depth-5)]"
                           placeholder="Enter your password"
                         />
                       </FormControl>
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--smash-depth-5)] hover:text-[var(--smash-depth-7)]"
                       >
-                        {showPassword ? (
-                          <EyeOff className="h-5 w-5" />
-                        ) : (
-                          <Eye className="h-5 w-5" />
-                        )}
+                        {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                       </button>
                     </div>
-                    <FormMessage />
+                    <FormMessage className="text-red-500" />
                   </FormItem>
                 )}
               />
@@ -120,20 +128,15 @@ export const Login = () => {
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="w-full py-3 px-4 bg-[#6C5CE7] hover:bg-[#5A4BD1] text-white rounded-lg font-medium transition-colors disabled:opacity-70"
+                  className="w-full py-3 px-4 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-[var(--smash-depth-10)] rounded-lg font-medium transition-colors disabled:opacity-70"
                 >
                   {isPending ? "Logging in..." : "Login Now"}
                 </button>
 
                 <button
                   type="button"
-                  disabled={isPending}
-                  onClick={() => {
-                    form.setValue('username', import.meta.env.VITE_DEMO_username || 'anoop@gmail.com');
-                    form.setValue('password', import.meta.env.VITE_DEMO_PASSWORD || 'welcomeE2');
-                    form.handleSubmit(onSubmit)();
-                  }}
-                  className="w-full py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors disabled:opacity-70"
+                  onClick={handleDemoLogin}
+                  className="w-full py-3 px-4 bg-[var(--smash-depth-8-04)] hover:bg-[var(--smash-depth-8-10)] text-[var(--smash-depth-7)] rounded-lg font-medium transition-colors disabled:opacity-70"
                 >
                   {isPending ? "Logging in..." : "Try Demo Account"}
                 </button>
@@ -143,11 +146,11 @@ export const Login = () => {
         </div>
 
         {/* Right side - Image */}
-        <div className="hidden md:block relative ">
+        <div className="hidden md:block relative">
           <img
             src="/login-bg.avif"
             alt="Login illustration"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover mix-blend-multiply"
           />
         </div>
       </div>

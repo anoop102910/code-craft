@@ -3,11 +3,11 @@ import { sqsClient } from "../config/sqs.js";
 
 const queueUrl = "http://local-sqs:9324/queue/test";
 
-export async function receiveMessages() {
+export async function receiveMessages({limit,wait}) {
   const params = {
     QueueUrl: queueUrl,
-    MaxNumberOfMessages: 10,
-    WaitTimeSeconds: 1,
+    MaxNumberOfMessages: limit,
+    WaitTimeSeconds: wait,
   };
 
   try {
