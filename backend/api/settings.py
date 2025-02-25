@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'submit_code',
     'authentication',
+    'contest',
     'rest_framework_simplejwt',
 ]
 

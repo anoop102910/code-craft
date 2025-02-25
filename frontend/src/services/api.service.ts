@@ -9,7 +9,7 @@ import {
   SubmitCodeRequest,
   UserCodeResponse,
 } from "@/types/index";
-
+import toast from "@/lib/toast";
 export const api = axios.create({
   baseURL: config.apiUrl,
   withCredentials: true,
@@ -21,6 +21,29 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
+}, async (error) => {
+  console.error("Authorization Error:", error);
+  if (error.response?.status === 401) {
+    try {
+      const refreshToken = localStorage.getItem("refresh");
+      const response = await api.post("/auth/refresh-token", { token: refreshToken });
+      console.log("refresh response", response.data);
+      const newToken = response.data.token;
+      localStorage.setItem("token", newToken);
+
+      if (error.config && error.config.headers) {
+        error.config.headers.Authorization = `Bearer ${newToken}`;
+      }
+      return api.request(error.config);
+    } catch (refreshError) {
+      console.error("Token Refresh Error:", refreshError);
+      toast.error("Session expired, please log in again.");
+      localStorage.removeItem("token");
+      localStorage.removeItem("refresh");
+      window.location.href = "/login";
+    }
+  }
+  return Promise.reject(error);
 });
 
 export const apiService = {

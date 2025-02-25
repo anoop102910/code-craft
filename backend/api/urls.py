@@ -21,4 +21,5 @@ urlpatterns = [
     path('', include('problems.urls')),
     path('', include('submit_code.urls')),
     path('', include('authentication.urls')),
+    path('', include('contest.urls')),
 ]
