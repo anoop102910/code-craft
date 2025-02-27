@@ -9,6 +9,7 @@ import {
   SubmitCodeRequest,
   UserCodeResponse,
 } from "@/types/index";
+import { toast } from "react-hot-toast";
 
 export const api = axios.create({
   baseURL: config.apiUrl,
@@ -22,6 +23,38 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   }
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      try {
+        // Attempt to refresh the token
+        const response = await axios.post(
+          `${config.apiUrl}/auth/refresh`,
+          { refreshToken: localStorage.getItem("refresh") },
+          { withCredentials: true }
+        );
+        
+        const newToken = response.data.token;
+        localStorage.setItem("token", newToken);
+        
+        // Retry the original request with the new token
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        return api(originalRequest);
+      } catch (refreshError) {
+        // If refresh fails, clear token and show login message
+        localStorage.removeItem("token");
+        toast.error("Please login to continue");
+        return Promise.reject(refreshError);
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const apiService = {
   auth: {

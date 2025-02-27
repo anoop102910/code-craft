@@ -89,7 +89,7 @@ export const ProblemPage = () => {
       intervalRef.current = setInterval(async () => {
         countRef.current++;
         console.log(countRef.current);
-        if (countRef.current > 40) {
+        if (countRef.current > 10) {
           countRef.current = 0;
           clearInterval(intervalRef.current!);
           setConsoleError("Time limit exceeded");
@@ -108,6 +108,7 @@ export const ProblemPage = () => {
           }
 
           if (userCodeResponse.status === "completed") {
+            countRef.current = 0;
             console.log(userCodeResponse);
             setPending(false);
             clearInterval(intervalRef.current!);
@@ -134,6 +135,7 @@ export const ProblemPage = () => {
             }
           }
         } catch (error) {
+          countRef.current = 0;
           console.error(error);
           clearInterval(intervalRef.current!);
         }

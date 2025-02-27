@@ -76,7 +76,7 @@ const handleMessage = async message => {
 };
 
 async function main() {
-  const messages = await receiveMessages({limit:10,wait:10});
+  const messages = await receiveMessages({limit:10,wait:1});
   if (!messages) return;
 
   Promise.all(messages.map(message => handleMessage(message)));

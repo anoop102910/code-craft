@@ -13,6 +13,7 @@ services:
       - AWS_SECRET_ACCESS_KEY=test
     volumes:
       - ./sqs_data:/data
+      - ./elasticmq.conf:/opt/elasticmq.conf
 
   # sqs-admin:
   #   image: wheniwork/sqs-admin
