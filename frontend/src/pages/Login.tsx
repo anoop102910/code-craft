@@ -62,17 +62,16 @@ export const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 ">
-      <div className="w-full max-w-[1000px] grid md:grid-cols-2 bg-[var(--smash-depth-2)] rounded-2xl shadow-xl overflow-hidden">
-        {/* Left side - Form */}
-        <div className="p-8 md:p-12">
+    <div className="flex  justify-center p-4">
+      <div className="w-full max-w-[440px] bg-[var(--smash-depth-2)] rounded-2xl shadow-xl overflow-hidden">
+        <div className="p-8">
           <div className="space-y-2 mb-8">
-            <h1 className="text-3xl font-bold text-[var(--smash-depth-8)]">Login</h1>
-            <p className="text-[var(--smash-depth-6)]">How to i get started lorem ipsum dolor sit?</p>
+            <h1 className="text-3xl font-bold text-[var(--smash-depth-8)]">Welcome back</h1>
+            <p className="text-[var(--smash-depth-6)]">Please enter your details to sign in</p>
           </div>
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
               <FormField
                 control={form.control}
                 name="username"
@@ -124,34 +123,46 @@ export const Login = () => {
                 )}
               />
 
-              <div className="space-y-3">
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  className="text-sm text-[var(--smash-depth-6)] hover:text-[var(--smash-depth-8)] transition-colors"
+                  onClick={() => navigate("/forgot-password")}
+                >
+                  Forgot password?
+                </button>
+              </div>
+
+              <div className="space-y-3 pt-2">
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="w-full py-3 px-4 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-[var(--smash-depth-10)] rounded-lg font-medium transition-colors disabled:opacity-70"
+                  className="w-full py-2.5 px-4 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-[var(--smash-depth-10)] rounded-lg font-medium transition-colors disabled:opacity-70"
                 >
-                  {isPending ? "Logging in..." : "Login Now"}
+                  {isPending ? "Signing in..." : "Sign in"}
                 </button>
 
                 <button
                   type="button"
                   onClick={handleDemoLogin}
-                  className="w-full py-3 px-4 bg-[var(--smash-depth-8-04)] hover:bg-[var(--smash-depth-8-10)] text-[var(--smash-depth-7)] rounded-lg font-medium transition-colors disabled:opacity-70"
+                  className="w-full py-2.5 px-4 bg-[var(--smash-depth-8-04)] hover:bg-[var(--smash-depth-8-10)] text-[var(--smash-depth-7)] rounded-lg font-medium transition-colors disabled:opacity-70"
                 >
-                  {isPending ? "Logging in..." : "Try Demo Account"}
+                  {isPending ? "Signing in..." : "Try Demo Account"}
                 </button>
+
+                <div className="text-center pt-4">
+                  <span className="text-[var(--smash-depth-6)]">Don't have an account? </span>
+                  <button
+                    type="button"
+                    onClick={() => navigate("/register")}
+                    className="text-[var(--primary)] hover:text-[var(--primary-hover)] font-medium transition-colors"
+                  >
+                    Sign up
+                  </button>
+                </div>
               </div>
             </form>
           </Form>
-        </div>
-
-        {/* Right side - Image */}
-        <div className="hidden md:block relative">
-          <img
-            src="/login-bg.avif"
-            alt="Login illustration"
-            className="w-full h-full object-cover mix-blend-multiply"
-          />
         </div>
       </div>
     </div>
