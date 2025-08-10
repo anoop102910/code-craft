@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  accounts      Account[]
+  sessions      Session[]
+  submissions   UserCode[]
+}
+
+model Account {
+  id                   String    @id @default(cuid())
+  userId               String
+  type                 String
+  provider             String
+  providerAccountId    String
+  refresh_token        String?   @db.Text
+  access_token         String?   @db.Text
+  expires_at           Int?
+  token_type           String?
+  scope                String?
+  id_token             String?   @db.Text
+  session_state        String?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  problems    Problem[]
+}
+
+model Problem {
+  id                 Int      @id @default(autoincrement())
+  title              String
+  slug               String   @unique
+  description        String
+  difficulty         String
+  acceptance         Float
+  frequency          Float
+  example_test_cases Json
+  all_test_cases     Json
+  constraints        Json
+  status             String   @default("Easy")
+  time_limit         Float
+  memory_limit       Float
+  category           Category? @relation(fields: [categoryId], references: [id])
+  categoryId         Int?
+  submissions        UserCode[]
+}
+
+model UserCode {
+  id              Int      @id @default(autoincrement())
+  user            User     @relation(fields: [userId], references: [id])
+  userId          String
+  code            String   @db.Text
+  language        String
+  problem         Problem  @relation(fields: [problemId], references: [id])
+  problemId       Int
+  status          String   @default("pending")
+  correct_cases   Int      @default(0)
+  incorrect_cases Int      @default(0)
+  execution_time  Float?
+  memory_used     Int?
+  result          String?
+  error_message   String?  @db.Text
+  submission_time DateTime @default(now())
+}
