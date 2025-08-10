@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@refinedev/antd": "^5.46.3"
+  }
+}
