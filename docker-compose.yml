@@ -1,4 +1,5 @@
 version: "3.8"
+
 services:
   sqs:
     image: softwaremill/elasticmq
@@ -15,21 +16,27 @@ services:
       - ./sqs_data:/data
       - ./elasticmq.conf:/opt/elasticmq.conf
 
-  # sqs-admin:
-  #   image: wheniwork/sqs-admin
-  #   container_name: sqs-admin
-  #   ports:
-  #     - "8002:8002"
-
   s3:
-      image: minio/minio
-      container_name: local-s3
-      ports:
-        - "9000:9000"  # S3 API
-        - "9001:9001"  # MinIO Console
-      environment:
-        MINIO_ROOT_USER: test
-        MINIO_ROOT_PASSWORD: test1234
-      command: server /data --console-address ":9001"
-      volumes:
-        - ./minio_data:/data
+    image: minio/minio
+    container_name: local-s3
+    ports:
+      - "9000:9000"  # S3 API
+      - "9001:9001"  # MinIO Console
+    environment:
+      MINIO_ROOT_USER: test
+      MINIO_ROOT_PASSWORD: test1234
+    command: server /data --console-address ":9001"
+    volumes:
+      - ./minio_data:/data
+
+  postgres:
+    image: postgres:16
+    container_name: local-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test1234
+      POSTGRES_DB: testdb
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
