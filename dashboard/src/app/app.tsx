@@ -7,6 +7,10 @@ import Login from "./auth/login";
 import Register from "./auth/register";
 import { ThemedLayoutV2, useNotificationProvider, RefineThemes } from "@refinedev/antd";
 import { dataProvider } from "./providers/data-provider";
+import { ProblemList } from "./problems/list";
+import { ProblemCreate } from "./problems/create";
+import { ProblemEdit } from "./problems/edit";
+import { ProblemShow } from "./problems/show";
 
 
 export default function App() {
@@ -19,7 +23,15 @@ export default function App() {
           authProvider={authProvider}
           routerProvider={routerProvider}
           notificationProvider={notificationProvider}
-          resources={[]}
+          resources={[
+            {
+              name: "problems",
+              list: "/problems",
+              create: "/problems/create",
+              edit: "/problems/edit/:id",
+              show: "/problems/show/:id",
+            },
+          ]}
         >
           <Routes>
             <Route
@@ -32,6 +44,12 @@ export default function App() {
               }
             >
               <Route index element={<Home />} />
+              <Route path="/problems">
+                <Route index element={<ProblemList />} />
+                <Route path="create" element={<ProblemCreate />} />
+                <Route path="edit/:id" element={<ProblemEdit />} />
+                <Route path="show/:id" element={<ProblemShow />} />
+              </Route>
             </Route>
 
             <Route

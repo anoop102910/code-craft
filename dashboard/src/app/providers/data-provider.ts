@@ -5,14 +5,15 @@ import qs from "qs";
 
 export const dataProvider: DataProvider = {
   getOne: async ({ resource, id }) => {
-    const { data } = await api.get(`/${resource}/${id}`);
-    return data;
+    const url = resource === "problems" ? `/${resource}/${id}`.replace(/ /g, "-").toLowerCase() : `/${resource}/${id}`;
+    const { data } = await api.get(url);
+    return { data };
   },
 
   getList: async ({ resource, pagination, sorters, filters, meta }) => {
     const query = qs.stringify({ filters, sorters, meta, pagination }, { arrayFormat: "indices" });
 
-    const { data } = await api.get(`/${resource}/?${query}`);
+    const { data } = await api.get(`/${resource}?${query}`);
     return data;
   },
 
@@ -22,7 +23,7 @@ export const dataProvider: DataProvider = {
   },
 
   update: async ({ resource, id, variables }) => {
-    const { data } = await api.put(`/${resource}/${id}`, variables);
+    const { data } = await api.patch(`/${resource}/${id}`, variables);
     return { data, success: true };
   },
 
